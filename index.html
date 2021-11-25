@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plant Monitor</title>
+    <meta name="description" content="Plant Monitor">
+    <meta name="author" content="Redzuan">
+    <meta property="og:title" content="Plant Monitor">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://plant.redzu.one/">
+    <meta property="og:description" content="A simple website for interacting with the plant monitor system">
+    <!--<meta property="og:image" content="image.png">-->
+    <link rel="icon" href="/favicon.ico">
+    <!--<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="stylesheet" href="css/styles.css?v=1.0">-->
+    <style>
+      button {
+        background: #023047;
+        color: white;
+        padding: 1em;
+        border: 2px solid #c7e0e8;
+        border-radius: 16px;
+        cursor: pointer;
+        box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, .12);
+        margin: 1em;
+      }
+
+      button:hover {
+        background: #0579B3;
+        border: 2px solid white;
+      }
+
+      * {
+        font-family: Helvetica;
+        transition: 0.2s ease-in-out;
+      }
+
+      .main {
+        background: #fafafa;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        background: whitesmoke;
+        border-radius: 16px;
+        padding: 0.5em;
+        box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, .12);
+        max-width: 90%;
+      }
+
+      body {
+        background: url("https://cdn.pixabay.com/photo/2021/11/17/19/14/background-6804432_960_720.jpg");
+        background-size: cover;
+      }
+
+      p {
+        display: inline-block;
+        padding: 1em;
+        margin: 1em;
+        border-radius: 16px;
+        width: 7em;
+        box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, .12);
+      }
+
+      #tempCard,
+      #humidityCard,
+      #brightnessCard,
+      #floatCard {
+        background: #06d6a0;
+      }
+
+      #soilCard {
+        background: #e40b0b;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <p id="soilCard">Soil Moisture: <span id="soilValue">559</span>/1023 </p>
+      <p id="pumpCard">Pump Status: <span id="pumpValue">Off</span>
+      </p>
+      <p id="floatCard">Floating Switch: <span id="float">High</span>
+      </p>
+      <p id="tempCard">Temperature: <span id="tempValue">37</span> °C </p>
+      <p id="humidityCard">Humidity: <span id="humidityValue">79.2</span>% </p>
+      <p id="humidityCard">Brightness <span id="brightnessValue">578</span>/1023 </p>
+      <br>
+      <button onclick="togglePump()">Toggle Pump <span></span>
+      </button>
+    </div>
+    <script>
+      function randomInteger(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function randomFloat(min, max) {
+        return ((Math.random() * (max - min + 1)) + min).toFixed(1);
+      }
+
+      function generateData() {
+        var intervalId = window.setInterval(function() {
+          var soil = randomInteger(868, 875);
+          document.getElementById("soilValue").innerHTML = soil
+          var temp = randomFloat(36, 37);
+          document.getElementById("tempValue").innerHTML = temp;
+          var humidity = randomFloat(78, 80);
+          document.getElementById("humidityValue").innerHTML = humidity
+          var brightness = randomInteger(950, 960);
+          document.getElementById("brightnessValue").innerHTML = brightness
+        }, 1000);
+      }
+      generateData();
+      var waterLevel = 2;
+
+      function togglePump() {
+        var pumpStatus = document.getElementById("pumpValue");
+        if (pumpStatus.innerHTML == "Off" && waterLevel > 0) {
+          pumpStatus.innerHTML = "On";
+          document.getElementById("pumpCard").style.background = "#06d6a0";
+          setTimeout(togglePumpOff, 2000);
+          waterLevel--;
+          console.log(waterLevel);
+        } else if (waterLevel > 0) {
+          alert("Pump is still turned on!")
+        } else {
+          alert("Not enough water!")
+        }
+        if (waterLevel == 0) {
+          document.getElementById("float").innerHTML = "Low";
+          document.getElementById("floatCard").style.color = "white";
+          document.getElementById("floatCard").style.background = "#e40b0b";
+        }
+      }
+
+      function togglePumpOff() {
+        document.getElementById("pumpValue").innerHTML = "Off";
+        document.getElementById("pumpCard").style.background = "white";
+      }
+    </script>
+  </body>
+</html>
